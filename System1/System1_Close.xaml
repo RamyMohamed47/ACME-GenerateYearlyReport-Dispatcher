@@ -1,7 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="System1_System1_Close" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sdp="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sdr="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <VisualBasic.Settings>
-    <x:Null />
-  </VisualBasic.Settings>
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_Close" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>GlobalConstantsNamespace</x:String>
@@ -47,7 +44,7 @@
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Attaches to the ACME browser and closes it (Close = Always)." DisplayName="System1 Close" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <ui:LogMessage DisplayName="Log Message (Closing ACME)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Closing ACME System 1 browser.&quot;]" />
-    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Always" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach and close)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="9ae71fdf-e21c-456c-869b-2a36c453c019" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" Version="V2">
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Always" DisplayName="Use Browser Chrome: ACME System 1 (attach and close)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="9ae71fdf-e21c-456c-869b-2a36c453c019" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
@@ -57,14 +54,18 @@
         </ActivityAction>
       </uix:NApplicationCard.Body>
       <uix:NApplicationCard.OCREngine>
-        <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+        <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
           <ActivityFunc.Argument>
-            <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+            <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
           </ActivityFunc.Argument>
         </ActivityFunc>
       </uix:NApplicationCard.OCREngine>
       <uix:NApplicationCard.TargetApp>
-        <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+        <uix:TargetApp Area="-9, -9, 1938, 1038" BrowserType="Chrome" ContentHash="yqNxWmoI50acA3YojMl1jg" InformativeScreenshot="edb6550f9b631d7985770e92be06eacc.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/login" Version="V3">
+          <uix:TargetApp.SapInfo>
+            <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+          </uix:TargetApp.SapInfo>
+        </uix:TargetApp>
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
   </Sequence>

@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Page Number Item",
+  "Description": "Pagination list item for a Work Items page number below the table; parametrized by PageNumberText",
+  "Type": "Element",
+  "TaxonomyType": "None",
+  "Id": "3QGhvi01TUWEKAbIrPVT9Q",
+  "Reference": "DIuyqXOjKk6448nZPJQ7wA/3QGhvi01TUWEKAbIrPVT9Q",
+  "ParentRef": "DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w",
+  "Created": "2026-11-07T13:55:09.5136021Z",
+  "Updated": "2026-11-07T13:55:09.5136021Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

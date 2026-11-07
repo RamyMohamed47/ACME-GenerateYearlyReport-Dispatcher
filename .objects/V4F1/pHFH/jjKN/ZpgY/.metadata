@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Work Items Table",
+  "Description": "Table listing work items (WIID, Description, Type, Status, Date) on the ACME Work Items page",
+  "Type": "Element",
+  "TaxonomyType": "None",
+  "Id": "ZpgY9D6TNkC59dK5e2eZbg",
+  "Reference": "DIuyqXOjKk6448nZPJQ7wA/ZpgY9D6TNkC59dK5e2eZbg",
+  "ParentRef": "DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w",
+  "Created": "2026-11-07T13:55:09.4125444Z",
+  "Updated": "2026-11-07T13:55:09.4125444Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

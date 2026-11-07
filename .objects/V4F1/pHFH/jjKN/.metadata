@@ -1,0 +1,14 @@
+﻿{
+  "Name": "ACME System 1",
+  "Description": "ACME System 1 test web app (acme-test.uipath.com) in Chrome; any page: login, dashboard, work items",
+  "Type": "Screen",
+  "Id": "jjKNOZmPBUuYp6ZIl1aA2w",
+  "Reference": "DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w",
+  "ParentRef": "DIuyqXOjKk6448nZPJQ7wA/pHFHmqcgSE-HLL5hRjDBqQ",
+  "Created": "2026-11-07T13:49:40.4624784Z",
+  "Updated": "2026-11-07T13:49:40.4624784Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.6.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

@@ -1,10 +1,11 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="System1_System1_ScrapeDataTable" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sdp="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sdr="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_ScrapeDataTable" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd2="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Work items table of the current page. Columns: WIID, Description, Type, Status, Date." Name="out_DataTable" Type="OutArgument(sd:DataTable)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>GlobalConstantsNamespace</x:String>
@@ -52,26 +53,34 @@
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Extracts the Work Items table of the page currently shown in the ACME browser.&#xA;Pagination is handled by the REFramework transaction loop, so do NOT configure a Next link." DisplayName="System1 Scrape Data Table" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="dfd8ab27-88e7-4458-a228-27d5a15740eb" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" Version="V2">
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="dfd8ab27-88e7-4458-a228-27d5a15740eb" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <uix:NExtractDataGeneric x:TypeArguments="sd:DataTable" sap2010:Annotation.AnnotationText="TODO: run the Table Extraction wizard on the Work Items table. Name the columns exactly: WIID, Description, Type, Status (from 'WI Status'), Date. No Next link." DisplayName="TODO Indicate — Extract Table Data: Work Items table" ExtractDataSettings="{x:Null}" ExtractedData="[out_DataTable]" HealingAgentBehavior="SameAsCard" LimitExtractionTo="Rows" sap2010:WorkflowViewState.IdRef="NExtractDataGeneric`1_1" Version="V5" />
+            <uix:NExtractDataGeneric x:TypeArguments="sd:DataTable" ExtractDataSettings="{x:Null}" sap2010:Annotation.AnnotationText="TODO: run the Table Extraction wizard on the Work Items table. Name the columns exactly: WIID, Description, Type, Status (from 'WI Status'), Date. No Next link." DisplayName="TODO Indicate — Extract Table Data: Work Items table" ExtractedData="[out_DataTable]" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NExtractDataGeneric`1_1" LimitExtractionTo="Rows" Version="V5">
+              <uix:NExtractDataGeneric.Target>
+                <uix:TargetAnchorable ContentHash="7NUJbetByUSKAP907PoCxw" DesignTimeRectangle="336, 538, 1248, 526" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Actions WIID Description Type Status Date' parentclass='*panel-default*' tag='TABLE' /&gt;" Guid="df763194-2ac9-44fc-a0d6-a2328307a4f7" InformativeScreenshot="119b6d56184caa1121503c410915faa0.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/ZpgY9D6TNkC59dK5e2eZbg" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System*' url='https://acme-test.uipath.com/work-items*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NExtractDataGeneric.Target>
+            </uix:NExtractDataGeneric>
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
       <uix:NApplicationCard.OCREngine>
-        <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+        <ActivityFunc x:TypeArguments="sd1:Image, scg:IEnumerable(scg:KeyValuePair(sd2:Rectangle, x:String))">
           <ActivityFunc.Argument>
-            <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+            <DelegateInArgument x:TypeArguments="sd1:Image" Name="Image" />
           </ActivityFunc.Argument>
         </ActivityFunc>
       </uix:NApplicationCard.OCREngine>
       <uix:NApplicationCard.TargetApp>
-        <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+        <uix:TargetApp Area="-9, -9, 1938, 1038" BrowserType="Chrome" ContentHash="yqNxWmoI50acA3YojMl1jg" InformativeScreenshot="edb6550f9b631d7985770e92be06eacc.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/login" Version="V3">
+          <uix:TargetApp.SapInfo>
+            <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+          </uix:TargetApp.SapInfo>
+        </uix:TargetApp>
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
     <ui:LogMessage DisplayName="Log Message (Rows extracted)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Extracted &quot; + out_DataTable.Rows.Count.ToString + &quot; work item(s) from the current page.&quot;]" />

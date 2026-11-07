@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="BcNHJ2STVES7MkP7kvj1aA" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="960, 1083, 40, 27" DesignTimeScaleFactor="1.25" ElementType="ListItem" ElementVisibilityArgument="Interactive" FullSelectorArgument="[string.Format(&quot;&lt;webctrl class='page-numbers' parentclass='*woocommerce-pagination*' tag='UL' /&gt;&lt;webctrl parentclass='page-numbers' visibleinnertext='{0}' tag='LI' /&gt;&quot;, PageNumberText)]" Guid="9263bbf3-2299-449a-b68a-770ad946e95d" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System*' url='https://acme-test.uipath.com/work-items*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="0" />
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="af9995c1d54670de025ca58e67e1c919.jpg" xmlns="">0M0j6P_UiJ0qF0qVi6qecKA</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

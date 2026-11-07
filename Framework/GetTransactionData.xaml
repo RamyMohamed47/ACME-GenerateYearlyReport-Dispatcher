@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="GetTransactionData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:sdp="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sdr="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="GetTransactionData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd2="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Sequential counter of transaction items." Name="in_TransactionNumber" Type="InArgument(x:Int32)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -108,7 +108,7 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log Message Get Transaction Item" sap:VirtualizedContainerService.HintSize="494.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Get the transaction item&quot;]" />
-    <ui:RetryScope DisplayName="Retry Get transaction item" sap:VirtualizedContainerService.HintSize="494.4,972" sap2010:WorkflowViewState.IdRef="RetryScope_2" NumberOfRetries="[Cint(in_Config(&quot;RetryNumberGetTransactionItem&quot;))]">
+    <ui:RetryScope LogRetriedExceptions="{x:Null}" RetriedExceptionsLogLevel="{x:Null}" DisplayName="Retry Get transaction item" sap:VirtualizedContainerService.HintSize="494.4,972" sap2010:WorkflowViewState.IdRef="RetryScope_2" NumberOfRetries="[Cint(in_Config(&quot;RetryNumberGetTransactionItem&quot;))]">
       <ui:RetryScope.ActivityBody>
         <ActivityAction>
           <TryCatch DisplayName="Try Catch Get transaction item" sap:VirtualizedContainerService.HintSize="451.2,764" sap2010:WorkflowViewState.IdRef="TryCatch_3">
@@ -130,7 +130,7 @@
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="37589fef-e815-4a8c-b52d-d4ddd2976b56" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" Version="V2">
+                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="37589fef-e815-4a8c-b52d-d4ddd2976b56" Version="V2">
                   <uix:NApplicationCard.Body>
                     <ActivityAction x:TypeArguments="x:Object">
                       <ActivityAction.Argument>
@@ -142,22 +142,26 @@
                     </ActivityAction>
                   </uix:NApplicationCard.Body>
                   <uix:NApplicationCard.OCREngine>
-                    <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+                    <ActivityFunc x:TypeArguments="sd1:Image, scg:IEnumerable(scg:KeyValuePair(sd2:Rectangle, x:String))">
                       <ActivityFunc.Argument>
-                        <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+                        <DelegateInArgument x:TypeArguments="sd1:Image" Name="Image" />
                       </ActivityFunc.Argument>
                     </ActivityFunc>
                   </uix:NApplicationCard.OCREngine>
                   <uix:NApplicationCard.TargetApp>
-                    <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+                    <uix:TargetApp Area="-9, -9, 1938, 1038" BrowserType="Chrome" ContentHash="yqNxWmoI50acA3YojMl1jg" InformativeScreenshot="edb6550f9b631d7985770e92be06eacc.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/login" Version="V3">
+                      <uix:TargetApp.SapInfo>
+                        <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+                      </uix:TargetApp.SapInfo>
+                    </uix:TargetApp>
                   </uix:NApplicationCard.TargetApp>
                 </uix:NApplicationCard>
                 <If Condition="[Not CurrentURL.StartsWith(in_Config(&quot;System1WorkItemsURL&quot;).ToString, StringComparison.OrdinalIgnoreCase)]" DisplayName="If not on the Work Items page" sap2010:WorkflowViewState.IdRef="If_2">
                   <If.Then>
                     <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                      <ui:InvokeWorkflowFile DisplayName="Invoke System1_NavigateTo_WI workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="System1\System1_NavigateTo_WI.xaml">
+                      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke System1_NavigateTo_WI workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="System1\System1_NavigateTo_WI.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InArgument x:TypeArguments="x:String" x:Key="in_URL">[in_Config(&quot;System1WorkItemsURL&quot;).ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_URL">[in_Config("System1WorkItemsURL").ToString]</InArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Sequence>
@@ -171,33 +175,40 @@
                     <InArgument x:TypeArguments="x:String">[in_TransactionNumber.ToString]</InArgument>
                   </Assign.Value>
                 </Assign>
-                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="cf812e04-0326-4619-9d37-5bd068177aa2" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" Version="V2">
+                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="cf812e04-0326-4619-9d37-5bd068177aa2" Version="V2">
                   <uix:NApplicationCard.Body>
                     <ActivityAction x:TypeArguments="x:Object">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
                       </ActivityAction.Argument>
                       <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_14">
-                        <uix:NCheckState sap2010:Annotation.AnnotationText="TODO: indicate a page-number link in the pagination bar, then make its text attribute dynamic: {{PageNumberText}} (selector editor &gt; Use variable). Remove idx/href attributes that contain the page number." DisplayName="TODO Indicate — Check App State: page-number link {{PageNumberText}} exists" Exists="[PageExists]" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="5" Version="V5">
+                        <uix:NCheckState sap2010:Annotation.AnnotationText="Target: pagination list item whose visibleinnertext = PageNumberText (selector parametrized with the PageNumberText variable). Matches the current page (plain text) and the other pages (links)." DisplayName="Check App State: page-number link {{PageNumberText}} exists" Exists="[PageExists]" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="5" Version="V5">
                           <uix:NCheckState.IfExists>
                             <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_15" />
                           </uix:NCheckState.IfExists>
                           <uix:NCheckState.IfNotExists>
                             <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_16" />
                           </uix:NCheckState.IfNotExists>
+                          <uix:NCheckState.Target>
+                            <uix:TargetAnchorable ContentHash="BcNHJ2STVES7MkP7kvj1aA" DesignTimeRectangle="960, 1083, 40, 27" ElementType="ListItem" ElementVisibilityArgument="Interactive" FullSelectorArgument="[string.Format(&quot;&lt;webctrl class='page-numbers' parentclass='*woocommerce-pagination*' tag='UL' /&gt;&lt;webctrl parentclass='page-numbers' visibleinnertext='{0}' tag='LI' /&gt;&quot;, PageNumberText)]" Guid="9263bbf3-2299-449a-b68a-770ad946e95d" InformativeScreenshot="af9995c1d54670de025ca58e67e1c919.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/3QGhvi01TUWEKAbIrPVT9Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System*' url='https://acme-test.uipath.com/work-items*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                          </uix:NCheckState.Target>
                         </uix:NCheckState>
                       </Sequence>
                     </ActivityAction>
                   </uix:NApplicationCard.Body>
                   <uix:NApplicationCard.OCREngine>
-                    <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+                    <ActivityFunc x:TypeArguments="sd1:Image, scg:IEnumerable(scg:KeyValuePair(sd2:Rectangle, x:String))">
                       <ActivityFunc.Argument>
-                        <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+                        <DelegateInArgument x:TypeArguments="sd1:Image" Name="Image" />
                       </ActivityFunc.Argument>
                     </ActivityFunc>
                   </uix:NApplicationCard.OCREngine>
                   <uix:NApplicationCard.TargetApp>
-                    <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+                    <uix:TargetApp Area="-9, -9, 1938, 1038" BrowserType="Chrome" ContentHash="yqNxWmoI50acA3YojMl1jg" InformativeScreenshot="edb6550f9b631d7985770e92be06eacc.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/jjKNOZmPBUuYp6ZIl1aA2w" Selector="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" Url="https://acme-test.uipath.com/login" Version="V3">
+                      <uix:TargetApp.SapInfo>
+                        <uix:SAPElementInfo IsSapSubsystem="False" WebAutomationFramework="Default" />
+                      </uix:TargetApp.SapInfo>
+                    </uix:TargetApp>
                   </uix:NApplicationCard.TargetApp>
                 </uix:NApplicationCard>
                 <Assign DisplayName="Assign out_TransactionItem" sap2010:WorkflowViewState.IdRef="Assign_9">
@@ -278,7 +289,7 @@
               <OutArgument x:TypeArguments="x:String">[out_TransactionField1]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[in_Config(&quot;System1WorkItemsURL&quot;).ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String">[in_Config("System1WorkItemsURL").ToString]</InArgument>
             </Assign.Value>
           </Assign>
           <Assign DisplayName="Assign out_TransactionField2" sap:VirtualizedContainerService.HintSize="459.2,104.8" sap2010:WorkflowViewState.IdRef="Assign_7">
