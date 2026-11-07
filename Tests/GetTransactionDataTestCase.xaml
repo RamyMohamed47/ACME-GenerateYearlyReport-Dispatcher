@@ -83,7 +83,7 @@
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="Config" />
       <Variable x:TypeArguments="x:Int32" Default="1" Name="TransactionNumber" />
-      <Variable x:TypeArguments="ui:QueueItem" Name="TransactionItem" />
+      <Variable x:TypeArguments="x:Int32" Name="TransactionItem" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -124,7 +124,7 @@
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="x:Int32" x:Key="in_TransactionNumber">[TransactionNumber]</InArgument>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[Config]</InArgument>
-          <OutArgument x:TypeArguments="ui:QueueItem" x:Key="out_TransactionItem">[TransactionItem]</OutArgument>
+          <OutArgument x:TypeArguments="x:Int32" x:Key="out_TransactionItem">[TransactionItem]</OutArgument>
           <OutArgument x:TypeArguments="x:String" x:Key="out_TransactionField1" />
           <OutArgument x:TypeArguments="x:String" x:Key="out_TransactionField2" />
           <OutArgument x:TypeArguments="x:String" x:Key="out_TransactionID" />
@@ -142,7 +142,7 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <uta:VerifyExpression AlternativeVerificationTitle="{x:Null}" KeepScreenshots="{x:Null}" OutputMessageFormat="{x:Null}" ScreenshotsPath="{x:Null}" ContinueOnFailure="True" DisplayName="Verify if transaction item was retrieved" Expression="[TransactionItem IsNot Nothing]" sap:VirtualizedContainerService.HintSize="451.2,122.4" sap2010:WorkflowViewState.IdRef="VerifyExpression_1" Result="[VerificationOutput]" TakeScreenshotInCaseOfFailingAssertion="False" TakeScreenshotInCaseOfSucceedingAssertion="False" />
+      <uta:VerifyExpression AlternativeVerificationTitle="{x:Null}" KeepScreenshots="{x:Null}" OutputMessageFormat="{x:Null}" ScreenshotsPath="{x:Null}" ContinueOnFailure="True" DisplayName="Verify if transaction item was retrieved" Expression="[TransactionItem &gt; 0]" sap:VirtualizedContainerService.HintSize="451.2,122.4" sap2010:WorkflowViewState.IdRef="VerifyExpression_1" Result="[VerificationOutput]" TakeScreenshotInCaseOfFailingAssertion="False" TakeScreenshotInCaseOfSucceedingAssertion="False" />
       <If Condition="[VerificationOutput]" DisplayName="If transaction item is not Nothing" sap:VirtualizedContainerService.HintSize="451.2,496.8" sap2010:WorkflowViewState.IdRef="If_1">
         <If.Then>
           <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="449.6,277.6" sap2010:WorkflowViewState.IdRef="Sequence_6">
@@ -151,7 +151,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:SetTransactionProgress TimeoutMS="{x:Null}" DisplayName="Set transaction item progress to tested" sap:VirtualizedContainerService.HintSize="416,217.6" sap2010:WorkflowViewState.IdRef="SetTransactionProgress_1" Progress="Tested" TransactionItem="[TransactionItem]" />
+            <ui:LogMessage DisplayName="Log message (Page found)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Work Items page &quot; + TransactionItem.ToString + &quot; found.&quot;]" />
           </Sequence>
         </If.Then>
         <If.Else>
