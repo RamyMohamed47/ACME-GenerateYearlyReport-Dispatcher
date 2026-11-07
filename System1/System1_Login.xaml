@@ -63,11 +63,6 @@
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="x:String" Name="Username" />
-              <Variable x:TypeArguments="ss:SecureString" Name="Password" />
-            </Sequence.Variables>
-            <ui:GetRobotCredential TimeoutMS="{x:Null}" AssetName="[in_System1Credential]" CacheStrategy="None" DisplayName="Get Credential (ACME System 1)" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1" Password="[Password]" Username="[Username]" />
             <uix:NCheckState DisplayName="Check App State: already logged in (Log Out link visible)" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_2" Timeout="3" Version="V5">
               <uix:NCheckState.IfExists>
                 <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_5">
@@ -76,6 +71,11 @@
               </uix:NCheckState.IfExists>
               <uix:NCheckState.IfNotExists>
                 <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="Username" />
+                    <Variable x:TypeArguments="ss:SecureString" Name="Password" />
+                  </Sequence.Variables>
+                  <ui:GetRobotCredential TimeoutMS="{x:Null}" AssetName="[in_System1Credential]" CacheStrategy="None" DisplayName="Get Credential (ACME System 1)" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1" Password="[Password]" Username="[Username]" />
                   <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into Email field" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NTypeInto_1" Text="[Username]" Version="V5">
                     <uix:NTypeInto.Target>
                       <uix:TargetAnchorable ContentHash="oHCRha5mMU6GnUNi_7Qv_Q" DesignTimeRectangle="335, 371, 606, 43" ElementType="InputBox" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl action='https://acme-test.uipath.com/login' method='POST' tag='FORM' matching:action='fuzzy' fuzzylevel:action='0.0' matching:method='fuzzy' fuzzylevel:method='0.0' /&gt;&lt;webctrl id='email' tag='INPUT' type='email' class='form-control ' aaname='Email:' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="6f3ab7b7-2aac-47c8-9c5d-ad7e3fba8599" InformativeScreenshot="f3d2a534aaf7e6c18f67a4cee03a378b.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/6IQsSkl1RUyPD0RQ-X5JfA" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System 1*' url='https://acme-test.uipath.com/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
