@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap2010" x:Class="System1_System1_ScrapeDataTable" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd2="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap2010" x:Class="System1_System1_ScrapeDataTable" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:uic="clr-namespace:UiPath.Core.Activities;assembly=UiPath.System.Activities" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd2="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Work items table of the current page. Columns: WIID, Description, Type, Status, Date." Name="out_DataTable" Type="OutArgument(sd:DataTable)" />
   </x:Members>
@@ -25,6 +25,8 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>UiPath.UIAutomationNext.Enums</x:String>
       <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Net</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -50,9 +52,17 @@
       <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
       <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
+      <AssemblyReference>System.Text.RegularExpressions</AssemblyReference>
+      <AssemblyReference>System.Runtime.Extensions</AssemblyReference>
+      <AssemblyReference>System.Net.Primitives</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Extracts the Work Items table of the page currently shown in the ACME browser.&#xA;Pagination is handled by the REFramework transaction loop, so do NOT configure a Next link." DisplayName="System1 Scrape Data Table" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Reads the Work Items table of the page currently shown in the ACME browser into out_DataTable (columns WIID, Description, Type, Status, Date; cells mapped by header name).&#xA;Pagination is handled by the REFramework transaction loop." DisplayName="System1 Scrape Data Table" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="TableHtml" />
+      <Variable x:TypeArguments="s:String[]" Name="Headers" />
+      <Variable x:TypeArguments="scg:List(s:String[])" Name="RowCells" />
+    </Sequence.Variables>
     <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="dfd8ab27-88e7-4458-a228-27d5a15740eb" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
@@ -60,11 +70,11 @@
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <uix:NExtractDataGeneric x:TypeArguments="sd:DataTable" ExtractDataSettings="{x:Null}" sap2010:Annotation.AnnotationText="TODO: run the Table Extraction wizard on the Work Items table. Name the columns exactly: WIID, Description, Type, Status (from 'WI Status'), Date. No Next link." DisplayName="TODO Indicate — Extract Table Data: Work Items table" ExtractedData="[out_DataTable]" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NExtractDataGeneric`1_1" LimitExtractionTo="Rows" Version="V5">
-              <uix:NExtractDataGeneric.Target>
+            <uix:NGetAttributeGeneric x:TypeArguments="x:String" Attribute="outerHtml" sap2010:Annotation.AnnotationText="Reads the Work Items table HTML. Used instead of Extract Table Data so no Studio extraction wizard is needed; parsed into out_DataTable below." DisplayName="Get Attribute (Work Items table outerHtml)" HealingAgentBehavior="SameAsCard" Result="[TableHtml]" sap2010:WorkflowViewState.IdRef="NGetAttributeGeneric`1_1" Version="V5">
+              <uix:NGetAttributeGeneric.Target>
                 <uix:TargetAnchorable ContentHash="7NUJbetByUSKAP907PoCxw" DesignTimeRectangle="336, 538, 1248, 526" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Actions WIID Description Type Status Date' parentclass='*panel-default*' tag='TABLE' /&gt;" Guid="df763194-2ac9-44fc-a0d6-a2328307a4f7" InformativeScreenshot="119b6d56184caa1121503c410915faa0.jpg" Reference="DIuyqXOjKk6448nZPJQ7wA/ZpgY9D6TNkC59dK5e2eZbg" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*ACME System*' url='https://acme-test.uipath.com/work-items*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
-              </uix:NExtractDataGeneric.Target>
-            </uix:NExtractDataGeneric>
+              </uix:NGetAttributeGeneric.Target>
+            </uix:NGetAttributeGeneric>
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
@@ -83,6 +93,69 @@
         </uix:TargetApp>
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
+    <Assign DisplayName="Assign out_DataTable (empty)" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="sd:DataTable">[out_DataTable]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="sd:DataTable">[New DataTable("WorkItems")]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <InvokeMethod DisplayName="Add columns WIID, Description, Type, Status, Date" MethodName="AddRange" sap2010:WorkflowViewState.IdRef="InvokeMethod_1">
+      <InvokeMethod.TargetObject>
+        <InArgument x:TypeArguments="sd:DataColumnCollection">[out_DataTable.Columns]</InArgument>
+      </InvokeMethod.TargetObject>
+      <InArgument x:TypeArguments="sd:DataColumn[]">[{New DataColumn("WIID", GetType(String)), New DataColumn("Description", GetType(String)), New DataColumn("Type", GetType(String)), New DataColumn("Status", GetType(String)), New DataColumn("Date", GetType(String))}]</InArgument>
+    </InvokeMethod>
+    <Assign DisplayName="Assign Headers" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:String[]">[Headers]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:String[]">[Regex.Matches(TableHtml, "&lt;th[^&gt;]*&gt;(.*?)&lt;/th&gt;", RegexOptions.Singleline Or RegexOptions.IgnoreCase).Cast(Of Match).Select(Function(c) WebUtility.HtmlDecode(Regex.Replace(c.Groups(1).Value, "&lt;[^&gt;]+&gt;", "")).Trim).ToArray]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[Not {&quot;WIID&quot;, &quot;Description&quot;, &quot;Type&quot;, &quot;Status&quot;, &quot;Date&quot;}.All(Function(h) Headers.Contains(h))]" DisplayName="If expected columns are missing" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Throw DisplayName="Throw System Exception (Unexpected table layout)" sap2010:WorkflowViewState.IdRef="Throw_1">
+            <Throw.Exception>
+              <InArgument x:TypeArguments="s:Exception">[New Exception("Work Items table headers changed. Found: " + String.Join(", ", Headers))]</InArgument>
+            </Throw.Exception>
+          </Throw>
+        </Sequence>
+      </If.Then>
+    </If>
+    <Assign DisplayName="Assign RowCells" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="scg:List(s:String[])">[RowCells]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="scg:List(s:String[])">[Regex.Matches(TableHtml, "&lt;tr[^&gt;]*&gt;(.*?)&lt;/tr&gt;", RegexOptions.Singleline Or RegexOptions.IgnoreCase).Cast(Of Match).Select(Function(r) Regex.Matches(r.Groups(1).Value, "&lt;td[^&gt;]*&gt;(.*?)&lt;/td&gt;", RegexOptions.Singleline Or RegexOptions.IgnoreCase).Cast(Of Match).Select(Function(c) WebUtility.HtmlDecode(Regex.Replace(c.Groups(1).Value, "&lt;[^&gt;]+&gt;", "")).Trim).ToArray).Where(Function(cells) cells.Length = Headers.Length).ToList]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="s:String[]" DisplayName="For Each table row" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+      <ui:ForEach.Values>
+        <InArgument x:TypeArguments="sc:IEnumerable">[RowCells]</InArgument>
+      </ui:ForEach.Values>
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="s:String[]">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="s:String[]" Name="cells" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <uic:AddDataRow DisplayName="Add Data Row (work item)" sap2010:WorkflowViewState.IdRef="AddDataRow_1">
+              <uic:AddDataRow.DataTable>
+                <InOutArgument x:TypeArguments="sd:DataTable">[out_DataTable]</InOutArgument>
+              </uic:AddDataRow.DataTable>
+              <uic:AddDataRow.ArrayRow>
+                <InArgument x:TypeArguments="s:Object[]">[New Object() {cells(Array.IndexOf(Headers, "WIID")), cells(Array.IndexOf(Headers, "Description")), cells(Array.IndexOf(Headers, "Type")), cells(Array.IndexOf(Headers, "Status")), cells(Array.IndexOf(Headers, "Date"))}]</InArgument>
+              </uic:AddDataRow.ArrayRow>
+            </uic:AddDataRow>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
     <ui:LogMessage DisplayName="Log Message (Rows extracted)" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Extracted &quot; + out_DataTable.Rows.Count.ToString + &quot; work item(s) from the current page.&quot;]" />
   </Sequence>
 </Activity>
