@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="GetTransactionData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="GetTransactionData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:sdp="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sdr="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Sequential counter of transaction items." Name="in_TransactionNumber" Type="InArgument(x:Int32)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -44,6 +44,8 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -92,6 +94,10 @@
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Get a transaction item from a specified source (e.g., Orchestrator queues, spreadsheets, databases, mailboxes or web APIs). &#xA;&#xA;If there are no transaction items remaining, out_TransactionItem is set to Nothing, which leads to the End Process state. &#xA;&#xA;For cases in which there is only a single transaction (i.e., a linear process), use an If activity to check whether the argument in_TransactionNumber has the value 1 (meaning it is the first and only transaction) and assign the transaction item to out_TransactionItem. For any other value of in_TransactionNumber, out_TransactionItem should be set to Nothing.&#xA;&#xA;If there are multiple transactions, use the argument in_TransactionNumber as an index to retrieve the correct transaction to be processed. If there are no more transactions left, it is necessary to set out_TransactionItem to Nothing, thus ending the process." DisplayName="Get Transaction Data" sap:VirtualizedContainerService.HintSize="1397.2,1983.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -114,11 +120,95 @@
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
               <Sequence DisplayName="Try" sap:VirtualizedContainerService.HintSize="449.6,250.4" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:String" Name="CurrentURL" />
+                  <Variable x:TypeArguments="x:String" Name="PageNumberText" />
+                  <Variable x:TypeArguments="x:Boolean" Name="PageExists" />
+                </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
+                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="37589fef-e815-4a8c-b52d-d4ddd2976b56" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" Version="V2">
+                  <uix:NApplicationCard.Body>
+                    <ActivityAction x:TypeArguments="x:Object">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                        <uix:NGetUrl CurrentUrl="[CurrentURL]" DisplayName="Get URL (current page)" sap2010:WorkflowViewState.IdRef="NGetUrl_1" Version="V5" />
+                      </Sequence>
+                    </ActivityAction>
+                  </uix:NApplicationCard.Body>
+                  <uix:NApplicationCard.OCREngine>
+                    <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+                      <ActivityFunc.Argument>
+                        <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+                      </ActivityFunc.Argument>
+                    </ActivityFunc>
+                  </uix:NApplicationCard.OCREngine>
+                  <uix:NApplicationCard.TargetApp>
+                    <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+                  </uix:NApplicationCard.TargetApp>
+                </uix:NApplicationCard>
+                <If Condition="[Not CurrentURL.StartsWith(in_Config(&quot;System1WorkItemsURL&quot;).ToString, StringComparison.OrdinalIgnoreCase)]" DisplayName="If not on the Work Items page" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If.Then>
+                    <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                      <ui:InvokeWorkflowFile DisplayName="Invoke System1_NavigateTo_WI workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="System1\System1_NavigateTo_WI.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_URL">[in_Config(&quot;System1WorkItemsURL&quot;).ToString]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </Sequence>
+                  </If.Then>
+                </If>
+                <Assign DisplayName="Assign PageNumberText" sap2010:WorkflowViewState.IdRef="Assign_8">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[PageNumberText]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[in_TransactionNumber.ToString]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="cf812e04-0326-4619-9d37-5bd068177aa2" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" Version="V2">
+                  <uix:NApplicationCard.Body>
+                    <ActivityAction x:TypeArguments="x:Object">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                        <uix:NCheckState sap2010:Annotation.AnnotationText="TODO: indicate a page-number link in the pagination bar, then make its text attribute dynamic: {{PageNumberText}} (selector editor &gt; Use variable). Remove idx/href attributes that contain the page number." DisplayName="TODO Indicate — Check App State: page-number link {{PageNumberText}} exists" Exists="[PageExists]" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="5" Version="V5">
+                          <uix:NCheckState.IfExists>
+                            <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_15" />
+                          </uix:NCheckState.IfExists>
+                          <uix:NCheckState.IfNotExists>
+                            <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_16" />
+                          </uix:NCheckState.IfNotExists>
+                        </uix:NCheckState>
+                      </Sequence>
+                    </ActivityAction>
+                  </uix:NApplicationCard.Body>
+                  <uix:NApplicationCard.OCREngine>
+                    <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+                      <ActivityFunc.Argument>
+                        <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+                      </ActivityFunc.Argument>
+                    </ActivityFunc>
+                  </uix:NApplicationCard.OCREngine>
+                  <uix:NApplicationCard.TargetApp>
+                    <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+                  </uix:NApplicationCard.TargetApp>
+                </uix:NApplicationCard>
+                <Assign DisplayName="Assign out_TransactionItem" sap2010:WorkflowViewState.IdRef="Assign_9">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int32">[out_TransactionItem]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int32">[If(PageExists, in_TransactionNumber, 0)]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:LogMessage DisplayName="Log Message (Page check)" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[If(PageExists, &quot;Work Items page &quot; + PageNumberText + &quot; found.&quot;, &quot;Work Items page &quot; + PageNumberText + &quot; does not exist. No more transactions.&quot;)]" />
               </Sequence>
             </TryCatch.Try>
             <TryCatch.Catches>

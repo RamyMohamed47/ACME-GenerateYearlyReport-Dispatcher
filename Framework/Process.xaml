@@ -1,7 +1,7 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:sdp="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sdr="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Work Items page number to process." Name="in_TransactionItem" Type="InArgument(x:Int32)" />
-    <x:Property sap2010:Annotation.AnnotationText="Running count of queue items added during the whole run." Name="io_QueueItemsAdded" Type="InOutArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Running count of matching work items dispatched during the whole run (added, or already present in the queue)." Name="io_QueueItemsAdded" Type="InOutArgument(x:Int32)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
   </x:Members>
   <VisualBasic.Settings>
@@ -38,6 +38,8 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>GlobalVariablesNamespace</x:String>
       <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -79,9 +81,21 @@
       <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="375.2,389.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="CurrentURL" />
+      <Variable x:TypeArguments="x:String" Name="PageNumberText" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_WorkItems" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_Filtered" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -89,6 +103,176 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
-    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="333.6,56" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
+    <ui:LogMessage DisplayName="Log Message (Processing page)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Processing Work Items page &quot; + in_TransactionItem.ToString]" />
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="246bc40d-28b5-4df6-bed3-72214a1c417e" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <uix:NGetUrl CurrentUrl="[CurrentURL]" DisplayName="Get URL (current page)" sap2010:WorkflowViewState.IdRef="NGetUrl_1" Version="V5" />
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <If Condition="[Not CurrentURL.StartsWith(in_Config(&quot;System1WorkItemsURL&quot;).ToString, StringComparison.OrdinalIgnoreCase)]" DisplayName="If not on the Work Items page" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <ui:InvokeWorkflowFile DisplayName="Invoke System1_NavigateTo_WI workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="System1\System1_NavigateTo_WI.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_URL">[in_Config(&quot;System1WorkItemsURL&quot;).ToString]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+        </Sequence>
+      </If.Then>
+    </If>
+    <Assign DisplayName="Assign PageNumberText" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[PageNumberText]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_TransactionItem.ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="TODO Indicate — Use Browser Chrome: ACME System 1 (attach)" HealingAgentBehavior="Job" OpenMode="Never" ScopeGuid="5ee8440c-cb76-4e18-a969-f17fa0ab853c" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <uix:NClick ActivateBefore="True" sap2010:Annotation.AnnotationText="TODO: indicate a page-number link in the pagination bar, then make its text attribute dynamic: {{PageNumberText}} (selector editor &gt; Use variable). Remove idx/href attributes that contain the page number." ClickType="Single" DisplayName="TODO Indicate — Click page-number link {{PageNumberText}}" HealingAgentBehavior="SameAsCard" KeyModifiers="None" MouseButton="Left" sap2010:WorkflowViewState.IdRef="NClick_1" Version="V5" />
+            <uix:NCheckState DisplayName="TODO Indicate — Check App State: Work Items table loaded" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Timeout="10" Version="V5">
+              <uix:NCheckState.IfExists>
+                <Sequence DisplayName="Target appears" sap2010:WorkflowViewState.IdRef="Sequence_5" />
+              </uix:NCheckState.IfExists>
+              <uix:NCheckState.IfNotExists>
+                <Sequence DisplayName="Target does not appear" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Throw DisplayName="Throw System Exception (Page did not load)" sap2010:WorkflowViewState.IdRef="Throw_1">
+                    <Throw.Exception>
+                      <InArgument x:TypeArguments="s:Exception">[New Exception("ACME Work Items page " + PageNumberText + " did not load.")]</InArgument>
+                    </Throw.Exception>
+                  </Throw>
+                </Sequence>
+              </uix:NCheckState.IfNotExists>
+            </uix:NCheckState>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sdr:Image, scg:IEnumerable(scg:KeyValuePair(sdp:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sdr:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" Version="V3" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <ui:InvokeWorkflowFile DisplayName="Invoke System1_ScrapeDataTable workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="System1\System1_ScrapeDataTable.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">[dt_WorkItems]</OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile DisplayName="Invoke System1_FilterWIDatatable workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="System1\System1_FilterWIDatatable.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Type">[in_Config("WIType").ToString]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_Datatable">[dt_WorkItems]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Status">[in_Config("WIStatus").ToString]</InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FilteredDatatable">[dt_Filtered]</OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <If Condition="[dt_Filtered.Rows.Count = 0]" DisplayName="If no matching work items on this page" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_7">
+          <ui:LogMessage DisplayName="Log Message (No matching items on page)" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;No &quot; + in_Config(&quot;WIType&quot;).ToString + &quot;/&quot; + in_Config(&quot;WIStatus&quot;).ToString + &quot; work items on page &quot; + PageNumberText + &quot;.&quot;]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="Else" sap2010:WorkflowViewState.IdRef="Sequence_8">
+          <ui:ForEach x:TypeArguments="sd:DataRow" DisplayName="For Each matching work item" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+            <ui:ForEach.Values>
+              <InArgument x:TypeArguments="sc:IEnumerable">[dt_Filtered.Rows]</InArgument>
+            </ui:ForEach.Values>
+            <ui:ForEach.Body>
+              <ActivityAction x:TypeArguments="sd:DataRow">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <TryCatch DisplayName="Try Add Queue Item" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                    <TryCatch.Try>
+                      <Sequence DisplayName="Try" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                        <ui:AddQueueItem DisplayName="Add Queue Item (WIID reference)" FolderPath="[in_Config(&quot;OrchestratorQueueFolder&quot;).ToString]" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" Reference="[row(&quot;WIID&quot;).ToString.Trim]" TimeoutMS="{x:Null}">
+                          <ui:AddQueueItem.ItemInformation>
+                            <InArgument x:TypeArguments="x:String" x:Key="WIID">[row("WIID").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Description">[row("Description").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Type">[row("Type").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Status">[row("Status").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Date">[row("Date").ToString.Trim]</InArgument>
+                          </ui:AddQueueItem.ItemInformation>
+                        </ui:AddQueueItem>
+                        <Assign DisplayName="Assign io_QueueItemsAdded (added)" sap2010:WorkflowViewState.IdRef="Assign_2">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Int32">[io_QueueItemsAdded]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Int32">[io_QueueItemsAdded + 1]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:LogMessage DisplayName="Log Message (Queue item added)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Queue item added. Reference: &quot; + row(&quot;WIID&quot;).ToString.Trim]" />
+                      </Sequence>
+                    </TryCatch.Try>
+                    <TryCatch.Catches>
+                      <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                        <ActivityAction x:TypeArguments="s:Exception">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                          </ActivityAction.Argument>
+                          <Sequence DisplayName="Catch" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                            <If Condition="[exception.Message.IndexOf(&quot;Duplicate&quot;, StringComparison.OrdinalIgnoreCase) &gt;= 0 OrElse exception.Message.IndexOf(&quot;already exists&quot;, StringComparison.OrdinalIgnoreCase) &gt;= 0]" DisplayName="If duplicate reference" sap2010:WorkflowViewState.IdRef="If_3">
+                              <If.Then>
+                                <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                                  <ui:LogMessage DisplayName="Log Message (Duplicate reference skipped)" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Warn" Message="[&quot;Duplicate reference &quot; + row(&quot;WIID&quot;).ToString.Trim + &quot; already in queue; skipped. &quot; + exception.Message]" />
+                                  <Assign DisplayName="Assign io_QueueItemsAdded (already queued)" sap2010:WorkflowViewState.IdRef="Assign_3">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Int32">[io_QueueItemsAdded]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:Int32">[io_QueueItemsAdded + 1]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </Sequence>
+                              </If.Then>
+                              <If.Else>
+                                <Sequence DisplayName="Else" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                  <Rethrow DisplayName="Rethrow (not a duplicate)" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                                </Sequence>
+                              </If.Else>
+                            </If>
+                          </Sequence>
+                        </ActivityAction>
+                      </Catch>
+                    </TryCatch.Catches>
+                  </TryCatch>
+                </Sequence>
+              </ActivityAction>
+            </ui:ForEach.Body>
+          </ui:ForEach>
+        </Sequence>
+      </If.Else>
+    </If>
   </Sequence>
 </Activity>
